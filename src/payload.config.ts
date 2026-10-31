@@ -8,7 +8,7 @@ import { Projects } from '@/payload/collections/Projects';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// В Docker данные сохраняются на постоянный смонтированный диск /app/data
+// Берем путь из DATABASE_PATH или дефолтный локальный путь
 const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../payload.db');
 
 export default buildConfig({
@@ -19,7 +19,7 @@ export default buildConfig({
   },
   collections: [Projects],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || 'super-secret-dev-key-change-me',
+  secret: process.env.PAYLOAD_SECRET || 'super-secret-dev-key-change-me-minimum-32-chars',
   typescript: {
     outputFile: path.resolve(dirname, 'types/payload-types.ts'),
   },

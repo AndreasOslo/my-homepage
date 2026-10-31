@@ -1,11 +1,10 @@
-# Этап 1: Сборка Next.js 15 и Payload CMS 3.x
+# Этап 1: Сборка зависимостей и Next.js 15
 FROM node:22-alpine AS builder
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
 COPY package*.json ./
 
-# Используем npm install вместо строгого npm ci для надежного разрешения дерева зависимостей
 RUN npm install --ignore-scripts
 
 COPY . .
@@ -15,7 +14,7 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
-# Этап 2: Минимальный production-контейнер
+# Этап 2: Минимальный production runtime
 FROM node:22-alpine AS runner
 WORKDIR /app
 
@@ -27,7 +26,9 @@ ENV HOSTNAME="0.0.0.0"
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Копируем результаты standalone-сборки
+# Создаем изолированную директорию с полными правами для пользователя nextjs под SQLite
+RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
+
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
