@@ -12,6 +12,9 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+# Отключаем экспериментальный fetch/web-storage undici флаг на время компиляции
+ENV NODE_OPTIONS="--no-experimental-fetch"
+
 RUN npm run build
 
 # Этап 2: Минимальный production runtime
@@ -26,7 +29,6 @@ ENV HOSTNAME="0.0.0.0"
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Создаем изолированную директорию с полными правами для пользователя nextjs под SQLite
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
 COPY --from=builder /app/public ./public
