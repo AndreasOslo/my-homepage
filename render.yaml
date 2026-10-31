@@ -9,6 +9,10 @@ services:
         value: 3000
       - key: NODE_ENV
         value: production
+      - key: NEXT_PUBLIC_SERVER_URL
+        value: https://my-homepage-20uz.onrender.com
+      - key: PAYLOAD_PUBLIC_SERVER_URL
+        value: https://my-homepage-20uz.onrender.com
       - key: DATABASE_PATH
         value: /app/data/payload.db
       - key: PAYLOAD_SECRET
