@@ -8,19 +8,22 @@ type Args = {
   children: React.ReactNode;
 };
 
+// Выносим Server Action на уровень модуля
+async function serverFunction(args: Parameters<typeof handleServerFunctions>[0]) {
+  'use server';
+  return handleServerFunctions({
+    ...args,
+    config,
+    importMap,
+  });
+}
+
 const Layout = ({ children }: Args) => {
   return (
     <RootLayout
       config={config}
       importMap={importMap}
-      serverFunction={async (args) => {
-        'use server';
-        return handleServerFunctions({
-          ...args,
-          config,
-          importMap,
-        });
-      }}
+      serverFunction={serverFunction}
     >
       {children}
     </RootLayout>

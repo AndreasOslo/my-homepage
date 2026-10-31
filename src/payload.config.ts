@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { buildConfig } from 'payload';
 import { sqliteAdapter } from '@payloadcms/db-sqlite';
@@ -11,6 +12,12 @@ const dirname = path.dirname(filename);
 
 const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../payload.db');
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+
+// Гарантируем создание папки для SQLite при холодном старте контейнера
+const dbDir = path.dirname(dbPath);
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
 
 export default buildConfig({
   serverURL,
@@ -30,7 +37,6 @@ export default buildConfig({
     client: {
       url: `file:${dbPath}`,
     },
-    // Принудительно накатывает схему таблиц при первом старте контейнера
     push: true,
   }),
 });
