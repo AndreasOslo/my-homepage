@@ -26,11 +26,16 @@ ENV HOSTNAME="0.0.0.0"
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Создаем директорию для базы данных SQLite с правами на запись
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
+# Копируем публичные файлы и результат standalone сборки
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# КОПИРУЕМ СКОМПИЛИРОВАННЫЕ NODE_MODULES ДЛЯ НАТИВНЫХ ДРАЙВЕРОВ SQLITE И КРИПТОГРАФИИ PAYLOAD
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 USER nextjs
 
