@@ -1,34 +1,30 @@
 import React from 'react';
-import type { Metadata } from 'next';
-import configPromise from '@/payload.config';
+import config from '@/payload.config';
 import '@payloadcms/next/css';
 import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts';
-import { importMap } from '@/app/(payload)/admin/importMap';
-import type { ServerFunctionClient } from 'payload';
+import { importMap } from './admin/importMap';
 
-interface Args {
+type Args = {
   children: React.ReactNode;
-}
-
-export const metadata: Metadata = {
-  description: 'Payload Admin Panel',
-  title: 'Payload Admin',
 };
 
-// Исправленная типизация аргументов клиентского вызова serverFunction
-const serverFunction: ServerFunctionClient = async (args) => {
-  'use server';
-  return handleServerFunctions({
-    ...args,
-    config: configPromise,
-    importMap,
-  });
-};
-
-export default async function Layout({ children }: Args): Promise<React.JSX.Element> {
+const Layout = ({ children }: Args) => {
   return (
-    <RootLayout config={configPromise} serverFunction={serverFunction} importMap={importMap}>
+    <RootLayout
+      config={config}
+      importMap={importMap}
+      serverFunction={async (args) => {
+        'use server';
+        return handleServerFunctions({
+          ...args,
+          config,
+          importMap,
+        });
+      }}
+    >
       {children}
     </RootLayout>
   );
-}
+};
+
+export default Layout;

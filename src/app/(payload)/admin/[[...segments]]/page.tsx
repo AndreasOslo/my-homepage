@@ -1,34 +1,29 @@
 import type { Metadata } from 'next';
-import configPromise from '@/payload.config';
+import config from '@/payload.config';
 import { RootPage, generatePageMetadata } from '@payloadcms/next/views';
-import { importMap } from '@/app/(payload)/admin/importMap';
+import { importMap } from '../importMap';
 
-type Args = Parameters<typeof RootPage>[0];
+type Args = {
+  params: Promise<{
+    segments?: string[];
+  }>;
+  searchParams: Promise<{
+    [key: string]: string | string[];
+  }>;
+};
 
-export const generateMetadata = ({
-  params,
-  searchParams,
-}: {
-  params: Args['params'];
-  searchParams: Args['searchParams'];
-}): Promise<Metadata> =>
-  generatePageMetadata({
-    config: configPromise,
-    params,
-    searchParams,
-  });
+export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
+  generatePageMetadata({ config, params, searchParams });
 
-export default async function AdminPage({
-  params,
-  searchParams,
-}: {
-  params: Args['params'];
-  searchParams: Args['searchParams'];
-}) {
-  return RootPage({
-    config: configPromise,
-    params,
-    searchParams,
-    importMap,
-  });
-}
+const Page = async ({ params, searchParams }: Args) => {
+  return (
+    <RootPage
+      config={config}
+      params={params}
+      searchParams={searchParams}
+      importMap={importMap}
+    />
+  );
+};
+
+export default Page;
