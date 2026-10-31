@@ -1,10 +1,12 @@
-# Этап 1: сборка зависимостей и проекта
-FROM node:20-alpine AS builder
+# Этап 1: сборка зависимостей и проекта на актуальной версии Node.js
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
 COPY package*.json ./
-RUN npm ci
+
+# Установка зависимостей с игнорированием несоответствий engine и актуализацией дерева
+RUN npm install --ignore-scripts
 
 COPY . .
 
@@ -13,8 +15,8 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
-# Этап 2: минимальный production образ
-FROM node:20-alpine AS runner
+# Этап 2: минимальный production runtime
+FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -24,9 +26,6 @@ ENV HOSTNAME="0.0.0.0"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-
-# Создание директории под SQLite базу данных с постоянными правами
-RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
