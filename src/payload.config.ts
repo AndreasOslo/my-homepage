@@ -9,7 +9,6 @@ import { Users } from '@/payload/collections/Users';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// В продакшене внутри Docker пишем в /app/data/payload.db, локально в корень проекта
 const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../payload.db');
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
@@ -31,5 +30,7 @@ export default buildConfig({
     client: {
       url: `file:${dbPath}`,
     },
+    // Принудительно накатывает схему таблиц при первом старте контейнера
+    push: true,
   }),
 });
