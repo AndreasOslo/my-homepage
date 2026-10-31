@@ -1,5 +1,5 @@
 # Этап 1: Сборка зависимостей и Next.js 15
-FROM node:22-alpine AS builder
+FROM node:22.12.0-alpine AS builder
 WORKDIR /app
 
 RUN apk add --no-cache libc6-compat
@@ -12,13 +12,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Отключаем экспериментальный fetch/web-storage undici флаг на время компиляции
-ENV NODE_OPTIONS="--no-experimental-fetch"
-
 RUN npm run build
 
 # Этап 2: Минимальный production runtime
-FROM node:22-alpine AS runner
+FROM node:22.12.0-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
