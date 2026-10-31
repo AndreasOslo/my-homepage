@@ -1,20 +1,19 @@
-import React from 'react';
-import config from '@/payload.config';
+import configPromise from '@/payload.config';
 import '@payloadcms/next/css';
 import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts';
 import type { ServerFunctionClient } from 'payload';
+import React from 'react';
 import { importMap } from './admin/importMap';
 
 type Args = {
   children: React.ReactNode;
 };
 
-// Типизируем Server Action строго как ServerFunctionClient
-const serverFunction: ServerFunctionClient = async (args) => {
+const serverFunction: ServerFunctionClient = async function (args) {
   'use server';
   return handleServerFunctions({
     ...args,
-    config,
+    config: configPromise,
     importMap,
   });
 };
@@ -22,7 +21,7 @@ const serverFunction: ServerFunctionClient = async (args) => {
 const Layout = ({ children }: Args) => {
   return (
     <RootLayout
-      config={config}
+      config={configPromise}
       importMap={importMap}
       serverFunction={serverFunction}
     >
