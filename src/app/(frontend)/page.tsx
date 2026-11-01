@@ -1,8 +1,6 @@
 import React from 'react';
-import ProjectList from '@/components/ProjectList';
+import { ProjectList } from '@/components/ProjectList';
 
-// Отключаем статический пререндеринг на этапе сборки Docker:
-// страница будет запрашивать данные только в рантайме после запуска сервера
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
