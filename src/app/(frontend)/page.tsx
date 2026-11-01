@@ -20,20 +20,22 @@ export default async function HomePage() {
 
     if (docs && docs.length > 0) {
       projects = docs.map((doc: any) => ({
-       id: String(doc.id),
-       title: doc.title,
-       description: doc.description || '',
-       category: doc.category || 'Web',
-       stack: Array.isArray(doc.stack) ? doc.stack : [],
-       tags: Array.isArray(doc.tags) ? doc.tags.map((t: any) => t.tag || t) : [],
-       githubUrl: doc.githubUrl || undefined,
-       liveUrl: doc.liveUrl || undefined,
+        id: String(doc.id),
+        title: doc.title,
+        description: doc.description || '',
+        category: doc.category || 'Web',
+        stack: Array.isArray(doc.stack) ? doc.stack : [],
+        repoUrl: doc.repoUrl || undefined,
+        liveUrl: doc.liveUrl || undefined,
       }));
     } else {
       projects = staticFallbackProjects;
     }
   } catch (error) {
-    console.warn('⚠️ Payload CMS offline or initializing, falling back to static projects:', error);
+    console.warn(
+      'Payload CMS is offline or initializing; falling back to static projects:',
+      error
+    );
     projects = staticFallbackProjects;
   }
 
@@ -42,10 +44,10 @@ export default async function HomePage() {
       <div className="max-w-5xl mx-auto space-y-12">
         <header className="space-y-4">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Портфолио проектов
+            Project Portfolio
           </h1>
           <p className="text-neutral-400 text-lg max-w-2xl">
-            Разработка веб-приложений на Next.js 15, TypeScript и Payload CMS.
+            Building web applications with Next.js 15, TypeScript, and Payload CMS.
           </p>
         </header>
 

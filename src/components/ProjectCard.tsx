@@ -35,7 +35,7 @@ export function ProjectCard({ project }: ProjectCardProps): React.JSX.Element {
               rel="noreferrer"
               className="text-zinc-300 hover:text-white transition-colors underline underline-offset-4"
             >
-              Репозиторий →
+              Repository →
             </a>
           )}
           {project.liveUrl && (
@@ -45,7 +45,7 @@ export function ProjectCard({ project }: ProjectCardProps): React.JSX.Element {
               rel="noreferrer"
               className="text-zinc-300 hover:text-white transition-colors underline underline-offset-4"
             >
-              Демо →
+              Live demo →
             </a>
           )}
         </div>
