@@ -49,3 +49,5 @@ next-env.d.ts
 data/
 /app/data/
 payload.db
+payload.db.bak
+payload.db.predev.bak
