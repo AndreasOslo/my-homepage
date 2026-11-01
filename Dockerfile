@@ -26,7 +26,7 @@ ENV HOSTNAME="0.0.0.0"
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Создаем директорию базы данных с полными правами пользователя nextjs
+# Подготовка директории базы данных SQLite
 RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
 
 COPY --from=builder /app/public ./public
@@ -39,5 +39,5 @@ USER nextjs
 
 EXPOSE 3000
 
-# Запускаем сервер Next.js напрямую
+# Запускаем сервер Next.js
 CMD ["node", "server.js"]

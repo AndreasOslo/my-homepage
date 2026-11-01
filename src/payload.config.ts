@@ -13,7 +13,6 @@ const dirname = path.dirname(filename);
 const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../payload.db');
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
-// Создаем директорию базы данных, если её нет
 const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
@@ -29,7 +28,7 @@ export default buildConfig({
   },
   collections: [Users, Projects],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || 'super-secret-dev-key-change-me-minimum-32-chars',
+  secret: process.env.PAYLOAD_SECRET || 'super-secret-dev-key-change-me-minimum-32-chars-long',
   typescript: {
     outputFile: path.resolve(dirname, 'types/payload-types.ts'),
   },
@@ -37,6 +36,10 @@ export default buildConfig({
     client: {
       url: `file:${dbPath}`,
     },
-    push: true, // Гарантирует авто-пуш структуры таблиц в файл
+    push: true,
   }),
+  // Принудительно вызываем инициализацию схемы при подключении
+  onInit: async (payload) => {
+    payload.logger.info('Payload CMS успешно инициализирован.');
+  },
 });
