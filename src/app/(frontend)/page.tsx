@@ -2,7 +2,7 @@ import React from 'react';
 import { getPayload } from 'payload';
 import configPromise from '@/payload.config';
 import { ProjectList } from '@/components/ProjectList';
-import { initialProjects as staticFallbackProjects } from '@/data/projects';
+import { PROJECTS_DATA as staticFallbackProjects } from '@/data/projects';
 import type { Project } from '@/types/project';
 
 export const dynamic = 'force-dynamic';
@@ -20,12 +20,14 @@ export default async function HomePage() {
 
     if (docs && docs.length > 0) {
       projects = docs.map((doc: any) => ({
-        id: String(doc.id),
-        title: doc.title,
-        description: doc.description || '',
-        tags: Array.isArray(doc.tags) ? doc.tags.map((t: any) => t.tag || t) : [],
-        githubUrl: doc.githubUrl || undefined,
-        liveUrl: doc.liveUrl || undefined,
+       id: String(doc.id),
+       title: doc.title,
+       description: doc.description || '',
+       category: doc.category || 'Web',
+       stack: Array.isArray(doc.stack) ? doc.stack : [],
+       tags: Array.isArray(doc.tags) ? doc.tags.map((t: any) => t.tag || t) : [],
+       githubUrl: doc.githubUrl || undefined,
+       liveUrl: doc.liveUrl || undefined,
       }));
     } else {
       projects = staticFallbackProjects;
