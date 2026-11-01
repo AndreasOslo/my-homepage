@@ -13,7 +13,7 @@ const dirname = path.dirname(filename);
 const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../payload.db');
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
-// Гарантируем создание папки для SQLite при холодном старте контейнера
+// Создаем директорию базы данных, если её нет
 const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
@@ -37,6 +37,6 @@ export default buildConfig({
     client: {
       url: `file:${dbPath}`,
     },
-    push: true,
+    push: true, // Гарантирует авто-пуш структуры таблиц в файл
   }),
 });
