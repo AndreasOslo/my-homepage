@@ -10,7 +10,8 @@ import { Users } from '@/payload/collections/Users';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../payload.db');
+// В продакшене путь /app/data/payload.db, локально — файл рядом
+const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../../data/payload.db');
 const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
 
 const dbDir = path.dirname(dbPath);
@@ -38,8 +39,4 @@ export default buildConfig({
     },
     push: true,
   }),
-  // Принудительно вызываем инициализацию схемы при подключении
-  onInit: async (payload) => {
-    payload.logger.info('Payload CMS успешно инициализирован.');
-  },
 });
