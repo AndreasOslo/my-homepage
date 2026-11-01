@@ -10,17 +10,20 @@ import { Users } from '@/payload/collections/Users';
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
-// В продакшене путь /app/data/payload.db, локально — файл рядом
-const dbPath = process.env.DATABASE_PATH || path.resolve(dirname, '../../data/payload.db');
-const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+// В продакшене Render путь берется из process.env.DATABASE_PATH (/app/data/payload.db).
+// Локально на Windows (из папки src) поднимаемся ровно на один уровень в корень: my-homepage/payload.db
+const dbPath = process.env.DATABASE_PATH 
+  ? process.env.DATABASE_PATH 
+  : path.resolve(dirname, '../payload.db');
 
+// Гарантируем наличие директории перед обращением драйвера SQLite
 const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
 export default buildConfig({
-  serverURL,
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
   admin: {
     user: Users.slug,
     importMap: {
