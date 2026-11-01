@@ -4,7 +4,7 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: '1',
     title: 'Developer Workspace & Portfolio',
-    description: 'Статический сайт-визитка с генерацией страниц без серверного рантайма.',
+    description: 'A static portfolio website with pages generated at build time.',
     category: 'web',
     stack: ['Next.js 15', 'Tailwind CSS v4', 'TypeScript'],
     repoUrl: 'https://github.com',
@@ -13,7 +13,7 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: '2',
     title: 'LogicLink Mobile App',
-    description: 'Мобильное приложение для аналитики и системной интеграции сервисов.',
+    description: 'A mobile app for analytics and service integration.',
     category: 'mobile',
     stack: ['React Native', 'TypeScript', 'PostgreSQL'],
     liveUrl: 'https://play.google.com',
@@ -22,7 +22,7 @@ export const PROJECTS_DATA: Project[] = [
   {
     id: '3',
     title: 'CSV Data Aggregator',
-    description: 'Скрипт потоковой обработки и суммирования структурированных данных.',
+    description: 'A script for streaming and summarizing structured data.',
     category: 'tools',
     stack: ['Python', 'Data Processing', 'CLI'],
     repoUrl: 'https://github.com',
